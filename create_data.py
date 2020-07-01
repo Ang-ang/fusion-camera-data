@@ -200,6 +200,7 @@ def _add_class_score(image_label, points_v, rect, Trv2c, P2):
                 break
             else:
                 points_v[i][4] = 0
+    points_v = points_v.astype(dtype=np.float32)
     return points_v
 
 
@@ -227,6 +228,7 @@ def _create_reduced_point_cloud(data_path='/mrtstorage/datasets/kitti/object_det
             points_v[:, 0] = -points_v[:, 0]
         points_v = box_np_ops.remove_outside_points(points_v, rect, Trv2c, P2,
                                                     info["img_shape"])
+        # print(points_v.dtype)
         """
         fusion camera data to lidar
         """
@@ -236,7 +238,7 @@ def _create_reduced_point_cloud(data_path='/mrtstorage/datasets/kitti/object_det
                                                                  '/kitti_train_results')
 
         points_v = _add_class_score(image_label, points_v, rect, Trv2c, P2)
-
+        # print(points_v.dtype)
         if save_path is None:
             save_filename = v_path.parent.parent / (v_path.parent.stem + "_reduced") / v_path.name
             # save_filename = str(v_path) + '_reduced'
